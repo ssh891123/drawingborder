@@ -23,9 +23,10 @@
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "parcel": "^2.8.3"
+    "parcel": "^2.8.3",
+    "prettier": "2.8.7"
   },
   "dependencies": {
-    "prettier": "2.8.7"
+    "@fortawesome/fontawesome-free": "^6.4.0"
   }
 }
