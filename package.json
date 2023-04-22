@@ -20,6 +20,12 @@
   "homepage": "https://github.com/ssh891123/drawingborder#readme",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.3",
+    "eslint": "^8.39.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "parcel": "^2.8.3"
+  },
+  "dependencies": {
+    "prettier": "2.8.7"
   }
 }
