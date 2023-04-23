@@ -6,6 +6,7 @@ class DrawingBoard {
     eraserColor = "#ffffff";
     backgroundColor = "#ffffff";
     IsNavigatorVisible = false; //안 보일때 navigator image가 업데이트 되지 않도록
+    undoArray = [];
     constructor() {
         this.assignElement();
         this.initContext();
@@ -26,7 +27,7 @@ class DrawingBoard {
         this.navigatorEl = this.toolbarEl.querySelector("#navigator");
         this.navigatorImageContainerEl = this.containerEl.querySelector('#imgNav');
         this.navigatorImageEl = this.navigatorImageContainerEl.querySelector('#canvasImg');
-        this.nav
+        this.undoEl = this.toolbarEl.querySelector("#undo");
     }
 
     initContext() {
@@ -48,6 +49,33 @@ class DrawingBoard {
         this.colorPickerEl.addEventListener("input", this.onChangeColor.bind(this));
         this.eraserEl.addEventListener("click", this.onClickEraser.bind(this));
         this.navigatorEl.addEventListener("click", this.onClickNavigator.bind(this));
+        this.undoEl.addEventListener("click", this.onClickUndo.bind(this));
+    }
+
+    onClickUndo(evnet) {
+        if (this.undoArray.length === 0) {
+            alert("더 이상 실행취소 불가합니다!");
+            return;
+        }
+        let previousDataUrl = this.undoArray.pop();
+        let previousImgage = new Image();
+        previousImgage.onload = () => {
+            this.context.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+            this.context.drawImage(previousImgage, 
+                0, 0, this.canvasEl.width, this.canvasEl.height, 
+                0, 0, this.canvasEl.width, this.canvasEl.height);
+        };
+        previousImgage.src = previousDataUrl;
+        
+    }
+
+    savaState() {
+        if(this.undoArray.length > 4) {
+            this.undoArray.shift();
+            this.undoArray.push(this.canvasEl.toDataURL());
+        } else {
+            this.undoArray.push(this.canvasEl.toDataURL());
+        }
     }
 
     onClickNavigator(event) {
@@ -114,6 +142,7 @@ class DrawingBoard {
             this.context.strokeStyle = this.eraserColor;
             this.context.lineWidth = 50
         }
+        this.savaState();
         console.log('onMouseDown');
     }
 
