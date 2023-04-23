@@ -5,6 +5,23 @@ class DrawingBoard {
     backgroundColor = "#ffffff";
     IsNavigatorVisible = false; //안 보일때 navigator image가 업데이트 되지 않도록
     undoArray = [];
+
+    containerEl;
+    canvasEl;
+    toolbarEl;
+    brushEl;
+    colorPickerEl;
+    brushPanelEl;
+    brushSliderEl;
+    brushSizePreviewEl;
+    eraserEl;
+    navigatorEl;
+    navigatorImageContainerEl;
+    navigatorImageEl;
+    undoEl;
+    clearEl;
+    downloadLinkEl;
+
     constructor() {
         this.assignElement();
         this.initContext();
@@ -27,6 +44,7 @@ class DrawingBoard {
         this.navigatorImageEl = this.navigatorImageContainerEl.querySelector('#canvasImg');
         this.undoEl = this.toolbarEl.querySelector("#undo");
         this.clearEl = this.toolbarEl.querySelector("#clear");
+        this.downloadLinkEl = this.toolbarEl.querySelector("#download");
     }
 
     initContext() {
@@ -50,6 +68,12 @@ class DrawingBoard {
         this.navigatorEl.addEventListener("click", this.onClickNavigator.bind(this));
         this.undoEl.addEventListener("click", this.onClickUndo.bind(this));
         this.clearEl.addEventListener("click", this.onClickClear.bind(this));
+        this.downloadLinkEl.addEventListener("click", this.onClickDownload.bind(this));
+    }
+
+    onClickDownload() {
+        this.downloadLinkEl.href = this.canvasEl.toDataURL("image/jpeg", 1); //1: 원본 가깝게
+        this.downloadLinkEl.download = "example.jpeg";
     }
 
     onClickClear() {
