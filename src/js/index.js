@@ -1,5 +1,3 @@
-console.log('그림판');
-    
 class DrawingBoard {
     MODE = "NONE" //None Brush Eraser
     IsMouseDown = false;
@@ -28,6 +26,7 @@ class DrawingBoard {
         this.navigatorImageContainerEl = this.containerEl.querySelector('#imgNav');
         this.navigatorImageEl = this.navigatorImageContainerEl.querySelector('#canvasImg');
         this.undoEl = this.toolbarEl.querySelector("#undo");
+        this.clearEl = this.toolbarEl.querySelector("#clear");
     }
 
     initContext() {
@@ -50,9 +49,17 @@ class DrawingBoard {
         this.eraserEl.addEventListener("click", this.onClickEraser.bind(this));
         this.navigatorEl.addEventListener("click", this.onClickNavigator.bind(this));
         this.undoEl.addEventListener("click", this.onClickUndo.bind(this));
+        this.clearEl.addEventListener("click", this.onClickClear.bind(this));
     }
 
-    onClickUndo(evnet) {
+    onClickClear() {
+        this.context.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height); //전체를 지움, canvas가 투명해짐
+        this.undoArray = [];
+        this.updateNavigator();
+        this.initCanvasBackground();
+    }
+
+    onClickUndo() {
         if (this.undoArray.length === 0) {
             alert("더 이상 실행취소 불가합니다!");
             return;
@@ -60,7 +67,7 @@ class DrawingBoard {
         let previousDataUrl = this.undoArray.pop();
         let previousImgage = new Image();
         previousImgage.onload = () => {
-            this.context.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height);
+            this.context.clearRect(0, 0, this.canvasEl.width, this.canvasEl.height); //전체를 지움
             this.context.drawImage(previousImgage, 
                 0, 0, this.canvasEl.width, this.canvasEl.height, 
                 0, 0, this.canvasEl.width, this.canvasEl.height);
@@ -86,7 +93,6 @@ class DrawingBoard {
     }
 
     updateNavigator() {
-        console.log('updateNavigator()');
         if (!this.IsNavigatorVisible) return;
         this.navigatorImageEl.src = this.canvasEl.toDataURL();
     }
@@ -143,7 +149,6 @@ class DrawingBoard {
             this.context.lineWidth = 50
         }
         this.savaState();
-        console.log('onMouseDown');
     }
 
     getMousePoistion(event) {
@@ -162,7 +167,6 @@ class DrawingBoard {
         this.brushPanelEl.classList.toggle("hide");
         event.currentTarget.classList.toggle("active"); //this.brushEl
         this.eraserEl.classList.remove("active");
-        console.log('onClickBrush:'+this.canvasEl.style.cursor);
     }
 }
 
