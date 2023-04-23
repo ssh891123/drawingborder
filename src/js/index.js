@@ -5,6 +5,7 @@ class DrawingBoard {
     IsMouseDown = false;
     eraserColor = "#ffffff";
     backgroundColor = "#ffffff";
+    IsNavigatorVisible = false; //안 보일때 navigator image가 업데이트 되지 않도록
     constructor() {
         this.assignElement();
         this.initContext();
@@ -25,6 +26,7 @@ class DrawingBoard {
         this.navigatorEl = this.toolbarEl.querySelector("#navigator");
         this.navigatorImageContainerEl = this.containerEl.querySelector('#imgNav');
         this.navigatorImageEl = this.navigatorImageContainerEl.querySelector('#canvasImg');
+        this.nav
     }
 
     initContext() {
@@ -49,6 +51,7 @@ class DrawingBoard {
     }
 
     onClickNavigator(event) {
+        this.IsNavigatorVisible = !event.currentTarget.classList.contains("active"); 
         event.currentTarget.classList.toggle("active");
         this.navigatorImageContainerEl.classList.toggle("hide");        
         this.updateNavigator();
@@ -56,6 +59,7 @@ class DrawingBoard {
 
     updateNavigator() {
         console.log('updateNavigator()');
+        if (!this.IsNavigatorVisible) return;
         this.navigatorImageEl.src = this.canvasEl.toDataURL();
     }
 
